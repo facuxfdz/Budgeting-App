@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom'
 
 import { Navbar } from './app/components'
+import AddButtons from './features/operations/AddButtons/AddButtons';
 
 function App() {
   return (
@@ -21,7 +22,7 @@ function App() {
             path="/"
             render={() => (
               <>
-                <p>Ola</p>
+                <AddButtons />
               </>
             )}
           />

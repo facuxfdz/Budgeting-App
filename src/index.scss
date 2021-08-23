@@ -1,0 +1,30 @@
+$primary-color: #ff8906;
+$primary-color-light: #ffae51;
+
+$secondary-color: #f25f4c;
+$secondary-color-light: #f18071;
+
+$page-main-color: #181818;
+$white-light: #e9e9e9;
+
+body {
+    background-color: $page-main-color;
+}
+
+.button-outline-primary {
+    border: 1px solid $primary-color;
+    color: $primary-color-light;
+}
+.button-outline-primary:hover {
+    color: black;
+    background-color: $primary-color;
+}
+
+.button-outline-secondary {
+    border: 1px solid $secondary-color;
+    color: $secondary-color-light;
+}
+
+.button-outline-secondary:hover {
+    background-color: $secondary-color;
+}
