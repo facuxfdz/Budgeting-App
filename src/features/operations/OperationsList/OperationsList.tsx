@@ -1,12 +1,21 @@
 import React from 'react'
+import { useAppSelector } from '../../../app/hooks';
+import { Operation } from '../'
 
-export interface IOperationsListProps {};
+const OperationsList: React.FC = () => {
 
-const OperationsList: React.FC<IOperationsListProps> = (props) => {
-    return (
-        <div>
-            Operations list
-        </div>
+    const user = useAppSelector(state => state.user)
+    const userOperations = useAppSelector(state => state.operations.filter(operation => operation.userEmail === Object.values(user)[0]))
+
+    return (    
+        <section className="container w-75 mt-5">
+                {userOperations.map(operation => (
+                    <Operation 
+                        key={operation.id}
+                        operation={operation}
+                    />
+                ))}
+        </section>
     );
 }
 
