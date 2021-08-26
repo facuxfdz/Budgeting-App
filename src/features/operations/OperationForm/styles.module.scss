@@ -1,0 +1,16 @@
+$form-color: #ff8906;
+
+.operationForm {
+    width: 75%;
+    margin: auto;
+    border: 1px solid $form-color;
+    border-radius: 5px;
+    margin-top: 2rem;
+    padding: 0.4rem 1.5rem 1.5rem 1.5rem;
+
+    input:focus {
+        border: 1px solid $form-color;
+    }
+    
+}
+
