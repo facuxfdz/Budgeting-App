@@ -29,6 +29,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
                 <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
             </div>
             
+
             <button type="submit" className="btn btn-primary me-4">Submit Category</button>
             <button 
                 className="btn btn-danger"

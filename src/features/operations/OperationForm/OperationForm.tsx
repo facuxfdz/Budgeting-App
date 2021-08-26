@@ -19,7 +19,8 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
     const [concept,setConcept] = useState('')
     const [amount,setAmount] = useState(0)
     const [operationDate,setOperationDate] = useState(date)
-
+    const [operationType,setOperationType] = useState('')
+    const [typeChecked,setTypeChecked] = useState(false)
     
     // Handle functions
     const handleCancel = () => {
@@ -27,6 +28,17 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
         setConcept('')
         setAmount(0)
         setOperationDate('')
+        setOperationType('')
+    }
+
+    const handleIncomeCheck = () => {
+        setTypeChecked(!typeChecked)
+        setOperationType('income')
+    }
+    
+    const handleExpenseCheck = () => {
+        setTypeChecked(!typeChecked)
+        setOperationType('expense')
     }
 
     const handleSave = (e: React.FormEvent) => {
@@ -37,7 +49,45 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
 
     return (
         <form className={styles.operationForm}>
+
+        {!typeChecked 
         
+        ?
+            (
+            <>
+            <label htmlFor="operation-type" className="text-warning mt-2 form-label">What are you going to registry?</label>
+            <div id="operation-type" className=" text-warning">
+
+                <input 
+                    type="radio" 
+                    className="btn-check" 
+                    name="options-outlined" 
+                    id="success-outlined" 
+                    autoComplete="off"
+                    onClick={handleIncomeCheck}
+                />
+                <label className="btn btn-outline-success me-3" htmlFor="success-outlined">Income</label>
+                <input 
+                    type="radio" 
+                    className="btn-check" 
+                    name="options-outlined" 
+                    id="danger-outlined" 
+                    autoComplete="off"
+                    onClick={handleExpenseCheck}
+                />
+                <label className="btn btn-outline-danger" htmlFor="danger-outlined">Expense</label>
+            </div>
+            </>
+            )
+            : null
+        }       
+
+        {typeChecked 
+            ?
+            (          
+            
+            <>
+
             <div className="mb-3 mt-3 text-warning">
                 <label htmlFor="concept" className="form-label">Concept</label>
                 <input 
@@ -47,7 +97,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                     className="form-control" id="concept" 
                 />
             </div>
-        
+            
             <label htmlFor="amount" className="text-warning form-label">Amount</label>
             <div className="mb-3 input-group">
                 <span className="input-group-text">$</span>
@@ -79,7 +129,12 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
             <button 
                 className="btn btn-danger"
                 onClick={handleCancel}    
-            >Cancel</button>        
+            >Cancel</button>     
+            </>
+            )   
+
+            : null
+        }
         </form>
     );
 }
