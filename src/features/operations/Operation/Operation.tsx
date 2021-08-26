@@ -23,12 +23,10 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
     const {concept,amount} = operation
     
     const handleDelete = () => {
-        alert('delete')
         setShowOperationActions(false)
     }
 
     const handleEdit = () => {
-        alert('edit')
         setShowOperationActions(false)
     }
 

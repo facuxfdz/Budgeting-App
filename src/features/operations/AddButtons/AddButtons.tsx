@@ -2,18 +2,37 @@ import React, { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { plusIcon } from '../../../app/icons'
 
+import { OperationForm, CategoryForm } from '../'
 
 const AddButtons: React.FC = () => {
     
     const [showOptions,setShowOptions] = useState(false)
+    const [showOperationForm,setShowOperationForm] = useState(false)
+    const [showCategoryForm,setShowCategoryForm] = useState(false)
+
+    const enableAddOptions = () => {
+        setShowOperationForm(false)
+        setShowCategoryForm(false)
+        setShowOptions(!showOptions);
+    }
+
+    const handleOperation = () => {
+        setShowOptions(false)
+        setShowOperationForm(true)
+
+    }
+
+    const handleCategory = () => {
+        setShowOptions(false)
+        setShowCategoryForm(true)        
+    }
+
+
     const props = useSpring({ 
         opacity: showOptions ? 1 : 0,
         marginTop: showOptions ? 0 : -10,
         delay: 95
     })
-    const enableAddOptions = () => {
-        setShowOptions(!showOptions);
-    }
   
     
     return (
@@ -30,29 +49,48 @@ const AddButtons: React.FC = () => {
                 </div>
             </div>
             <div className="row text-center">
+                <animated.div style={{...props}}>
                 {showOptions 
                     ? (
                         <>
-                        <animated.div style={{...props}}>
+                        
                             
                             <button 
                                 type="button" 
                                 className="btn button-outline-secondary mt-3 me-2"
+                                onClick={handleOperation}
                             >Operation</button>
                                                     
                             
                             <button 
                                 type="button" 
                                 className="btn button-outline-secondary mt-3 ms-2"
+                                onClick={handleCategory}
                             >Category</button>
-                           
-                       
-                        </animated.div>
 
                         </>
                     )
                     
                     : null
+                }                
+                </animated.div>
+
+                {showOperationForm
+                
+                ? <OperationForm 
+                    setShowOperationForm={setShowOperationForm}
+                />   
+
+                : null
+                }
+
+                {showCategoryForm
+                
+                ?   <CategoryForm 
+                        setShowCategoryForm={setShowCategoryForm}
+                    />   
+
+                : null
                 }
             </div>
         
