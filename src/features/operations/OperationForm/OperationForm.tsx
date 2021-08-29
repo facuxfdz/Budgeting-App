@@ -44,6 +44,15 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault()
 
+        const operation = {
+            concept,
+            amount,
+            date: operationDate,
+            type: operationType
+        }
+
+        console.log(operation)
+        
         // Save logic
     }
 
@@ -124,7 +133,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                 type="submit" 
                 className="btn btn-warning me-4"
                 onClick={handleSave}
-            >Save Operation</button>
+            >Save</button>
             
             <button 
                 className="btn btn-danger"
