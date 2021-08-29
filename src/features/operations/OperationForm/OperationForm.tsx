@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import styles from './styles.module.scss'
 
 export interface IOperationFormProps {
@@ -40,6 +40,19 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
         setTypeChecked(!typeChecked)
         setOperationType('expense')
     }
+
+    const handleConceptChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setConcept(e.target.value)
+    }
+
+    const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setAmount(Number(e.target.value) || 0)
+    }
+    
+    const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setOperationDate(e.target.value)
+    }
+
 
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault()
@@ -102,7 +115,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                 <input 
                     type="text" 
                     value={concept} 
-                    onChange={e => setConcept(e.target.value)} 
+                    onChange={handleConceptChange} 
                     className="form-control" id="concept" 
                 />
             </div>
@@ -113,7 +126,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                 <input 
                     type="number" 
                     value={`${amount}`} 
-                    onChange={e => setAmount(Number(e.target.value) || 0)} 
+                    onChange={handleAmountChange} 
                     className="form-control" id="amount" 
                 />
             </div>
@@ -123,7 +136,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                 <input 
                     type="date" 
                     defaultValue={operationDate} 
-                    onChange={e => setOperationDate(e.target.value)}
+                    onChange={handleDateChange}
                     className="form-control" id="date" 
                 />
             </div>

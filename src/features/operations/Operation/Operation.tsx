@@ -18,6 +18,7 @@ interface OperationObject {
 
 const Operation: React.FC<OperationObject> = ({operation}) => {
 
+
     const [showOperationActions,setShowOperationActions] = useState(false)
 
     const {concept,amount} = operation
@@ -30,10 +31,18 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
         setShowOperationActions(false)
     }
 
+    const handleHide = () => {
+        setShowOperationActions(false)
+    }
+
+    const handleShowOperationActions = () => {
+        setShowOperationActions(true)
+    }
+
     return (
         <>
         <div 
-            onClick={() => setShowOperationActions(!showOperationActions)}
+            onClick={handleShowOperationActions}
             className={`${styles.operationCard}`}>
             
             <span className={`${styles.concept}`}>{concept}</span>
@@ -44,7 +53,7 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
         <Modal
             size="sm"
             show={showOperationActions}
-            onHide={() => setShowOperationActions(false)}
+            onHide={handleHide}
             aria-labelledby="operation-options"
             centered
         >

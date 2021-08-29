@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 import styles from './styles.module.scss'
 
 export interface IOperationFormProps {
@@ -9,6 +9,10 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
 
     const [category,setCategory] = useState('')
     
+    const handleCategory = (e: ChangeEvent<HTMLInputElement>) => {
+        setCategory(e.target.value)
+    }
+    
     const handleCancel = () => {
         setShowCategoryForm(false)
     }
@@ -17,7 +21,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
         e.preventDefault()
 
         // Save logic
-        
+
         console.log(category)
     }
 
@@ -29,7 +33,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
                 <input 
                     type="text" 
                     value={category} 
-                    onChange={e => setCategory(e.target.value)} 
+                    onChange={handleCategory} 
                     className="form-control" id="category" 
                 />
             </div>
