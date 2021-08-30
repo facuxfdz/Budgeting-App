@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { plusIcon } from '../../../app/icons'
 
-import { OperationForm, CategoryForm } from '../'
+import { OperationForm } from '../'
+import { CategoryForm } from '../../categories'
 
 const AddButtons: React.FC = () => {
     

@@ -1,11 +1,16 @@
 import React, { ChangeEvent, useState } from 'react'
+import { useAppDispatch } from '../../../app/hooks'
 import styles from './styles.module.scss'
+
+import { categoryAdded } from '../categoriesSlice'
 
 export interface IOperationFormProps {
     setShowCategoryForm: React.Dispatch<React.SetStateAction<boolean>>
 };
 
 const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => {
+
+    const dispatch = useAppDispatch()
 
     const [category,setCategory] = useState('')
     
@@ -21,8 +26,9 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
         e.preventDefault()
 
         // Save logic
-
-        console.log(category)
+        dispatch(categoryAdded(category))
+        alert('category added!')
+        setShowCategoryForm(false)
     }
 
     
