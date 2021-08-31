@@ -1,6 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useAppSelector } from '../../../app/hooks'
+import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import styles from './styles.module.scss'
+import {nanoid} from '@reduxjs/toolkit'
+
+import {operationAdded} from '../operationsSlice'
 
 export interface IOperationFormProps {
     setShowOperationForm: React.Dispatch<React.SetStateAction<boolean>>
@@ -8,6 +11,7 @@ export interface IOperationFormProps {
 
 const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) => {
 
+    const dispatch = useAppDispatch()
 
     // Logic to extract the date in the required format for the input
     // By default, the operation will be the same day we are writting it
@@ -24,9 +28,12 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
     const [typeChecked,setTypeChecked] = useState(false)
     const [category,setCategory] = useState('')
 
-    // Select categories global state 
+    // Select from global state logic 
     const categories = useAppSelector(state => state.categories)
+    const user = useAppSelector(state => state.user)
+    const userEmail = String(Object.values(user)[0])
 
+    // Helper functions 
     const resetAll = () => {
         setConcept('')
         setAmount(0)
@@ -68,24 +75,26 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
         e.preventDefault()
 
         const operation = {
+            id: nanoid(),
             concept,
             amount,
             date: operationDate,
             type: operationType,
             category,
+            userEmail
         }
 
         if(canSave){
-            console.log(operation)
             resetAll()
+            dispatch(operationAdded(operation))
+            setShowOperationForm(false)
         }
         else{alert('All fields required')}
 
-        // Save logic
     }
 
     // Conditional logic
-    const canSave = [concept,amount,operationDate,operationType,category].every(Boolean)
+    const canSave = [concept,amount,operationDate,operationType,category,userEmail].every(Boolean)
 
     return (
         <form className={styles.operationForm}>

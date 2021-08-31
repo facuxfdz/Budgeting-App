@@ -8,6 +8,7 @@ interface OperationType {
     concept: string,
     amount: number,
     type: string,
+    category: string,
     userEmail: string
 
 }

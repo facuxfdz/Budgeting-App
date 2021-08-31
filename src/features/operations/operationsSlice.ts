@@ -1,16 +1,27 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = [
-    {id: '1', date: Date(), concept: 'Some income', amount:200, type: 'income', userEmail: 'facu@facu'},
-    {id: '2', date: Date(), concept: 'Some income 2', amount:350, type: 'expense', userEmail: 'facu@facu'},
-    {id: '13', date: Date(), concept: 'Some income 3', amount: 540, type: 'income', userEmail: 'facu2@facu'},
-    {id: '16', date: Date(), concept: "Some income 4", amount: 233, type: 'income', userEmail: 'facu@facu'},
-]
+interface Operation {
+    id: string,
+    date: string,
+    concept: string,
+    amount: number,
+    type: string,
+    category: string,
+    userEmail: string,
+
+}
+const initialState:Operation[] = []
 
 const operationsSlice = createSlice({
     name: 'operationsSlice',
     initialState,
-    reducers: {}
+    reducers: {
+        operationAdded: (state, action: PayloadAction<Operation>) => {
+            state.push(action.payload)
+        }
+    }
 })
+
+export const {operationAdded} = operationsSlice.actions
 
 export default operationsSlice.reducer
