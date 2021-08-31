@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react'
+import { useAppSelector } from '../../../app/hooks'
 import styles from './styles.module.scss'
 
 export interface IOperationFormProps {
@@ -21,14 +22,23 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
     const [operationDate,setOperationDate] = useState(date)
     const [operationType,setOperationType] = useState('')
     const [typeChecked,setTypeChecked] = useState(false)
-    
-    // Handle functions
-    const handleCancel = () => {
-        setShowOperationForm(false)
+    const [category,setCategory] = useState('')
+
+    // Select categories global state 
+    const categories = useAppSelector(state => state.categories)
+
+    const resetAll = () => {
         setConcept('')
         setAmount(0)
         setOperationDate('')
         setOperationType('')
+        setCategory('')
+    }
+
+    // Handle functions
+    const handleCancel = () => {
+        setShowOperationForm(false)
+        resetAll()
     }
 
     const handleIncomeCheck = () => {
@@ -61,13 +71,21 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
             concept,
             amount,
             date: operationDate,
-            type: operationType
+            type: operationType,
+            category,
         }
 
-        console.log(operation)
-        
+        if(canSave){
+            console.log(operation)
+            resetAll()
+        }
+        else{alert('All fields required')}
+
         // Save logic
     }
+
+    // Conditional logic
+    const canSave = [concept,amount,operationDate,operationType,category].every(Boolean)
 
     return (
         <form className={styles.operationForm}>
@@ -140,8 +158,27 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                     className="form-control" id="date" 
                 />
             </div>
-
-
+            
+            <div className="mb-3 mt-3 text-warning">
+                <label htmlFor="category" className="form-label">Category</label>
+                <select 
+                    className="form-select" 
+                    aria-label="Default select example"
+                    value={category}
+                    id="category"
+                    onChange={e => setCategory(e.target.value)}
+                >
+                <option defaultValue="">Select a category</option>
+                    {categories.map(categ => (
+                        <option 
+                            key={categ.id}
+                            value={categ.name}    
+                        >
+                            {categ.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <button 
                 type="submit" 
                 className="btn btn-warning me-4"

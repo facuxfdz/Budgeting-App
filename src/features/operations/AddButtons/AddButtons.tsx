@@ -4,6 +4,7 @@ import { plusIcon } from '../../../app/icons'
 
 import { OperationForm } from '../'
 import { CategoryForm } from '../../categories'
+import { useAppSelector } from '../../../app/hooks'
 
 const AddButtons: React.FC = () => {
     
@@ -11,6 +12,8 @@ const AddButtons: React.FC = () => {
     const [showOperationForm,setShowOperationForm] = useState(false)
     const [showCategoryForm,setShowCategoryForm] = useState(false)
 
+    const categories = useAppSelector(state => state.categories)
+    
     const enableAddOptions = () => {
         setShowOperationForm(false)
         setShowCategoryForm(false)
@@ -29,6 +32,8 @@ const AddButtons: React.FC = () => {
     }
 
 
+    const canOpenOperations = categories.length !== 0
+    
     const props = useSpring({ 
         opacity: showOptions ? 1 : 0,
         marginTop: showOptions ? 0 : -10,
@@ -60,6 +65,7 @@ const AddButtons: React.FC = () => {
                                 type="button" 
                                 className="btn button-outline-secondary mt-3 me-2"
                                 onClick={handleOperation}
+                                disabled={!canOpenOperations}
                             >Operation</button>
                                                     
                             
