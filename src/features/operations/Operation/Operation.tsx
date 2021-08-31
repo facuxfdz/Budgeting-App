@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import styles from './styles.module.scss'
 import Modal from 'react-bootstrap/Modal'
+import { useAppDispatch } from '../../../app/hooks'
+
+import {operationDeleted} from '../operationsSlice'
 
 interface OperationType {
     id: string,
@@ -19,12 +22,14 @@ interface OperationObject {
 
 const Operation: React.FC<OperationObject> = ({operation}) => {
 
+    const dispatch = useAppDispatch() 
 
     const [showOperationActions,setShowOperationActions] = useState(false)
 
-    const {concept,amount} = operation
+    const {id, concept,amount} = operation
     
     const handleDelete = () => {
+        dispatch( operationDeleted(id) )
         setShowOperationActions(false)
     }
 
