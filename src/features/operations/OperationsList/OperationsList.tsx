@@ -1,11 +1,14 @@
 import React from 'react'
 import { useAppSelector } from '../../../app/hooks';
 import { Operation } from '../'
+import {selectOperationByUser} from  '../operationsSlice'
 
 const OperationsList: React.FC = () => {
 
     const user = useAppSelector(state => state.user)
-    const userOperations = useAppSelector(state => state.operations.filter(operation => operation.userEmail === Object.values(user)[0]))
+    const userEmail = String(Object.values(user)[0])
+
+    const userOperations = useAppSelector(state => selectOperationByUser(state,userEmail))
     
     return (    
         <section className="container w-75 mt-5">
