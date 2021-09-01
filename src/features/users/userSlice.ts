@@ -1,18 +1,21 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 
 interface User {
     email: string,
     password: string
 }
 
-const initialState = {}
+const userAdapter = createEntityAdapter<User>({
+    selectId: user => user.email
+})
+
 
 const userSlice = createSlice({
     name: 'user',
-    initialState,
+    initialState: userAdapter.getInitialState(),
     reducers: {
-        userAuthenticated: (state,action: PayloadAction<User>) => {
-            return action.payload
+        userAuthenticated: (state,action) => {
+            userAdapter.setOne(state,action.payload)
         }
     }
         
