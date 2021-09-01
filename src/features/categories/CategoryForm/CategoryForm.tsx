@@ -4,6 +4,7 @@ import styles from './styles.module.scss'
 import {nanoid} from '@reduxjs/toolkit'
 
 import { categoryAdded } from '../categoriesSlice'
+import { selectCurrentUserEmail } from '../../users/userSlice'
 
 export interface IOperationFormProps {
     setShowCategoryForm: React.Dispatch<React.SetStateAction<boolean>>
@@ -13,9 +14,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
 
     const dispatch = useAppDispatch()
 
-    const user = useAppSelector(state => state.user)
-    const userEmail = String(Object.values(user)[0])
-
+    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
     const [category,setCategory] = useState('')
     
     const handleCategory = (e: ChangeEvent<HTMLInputElement>) => {

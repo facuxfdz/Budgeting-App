@@ -95,12 +95,13 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
             dispatch(operationAdded(operation))
             setShowOperationForm(false)
         }
-        else{alert('All fields required')}
+        else if(amount <= 0){alert('Amount must be a valid value')}
+        else alert('All fields required')
 
     }
 
     // Conditional logic
-    const canSave = [concept,amount,operationDate,operationType,category,userEmail].every(Boolean)
+    const canSave = [concept,amount,operationDate,operationType,category,userEmail].every(Boolean) && amount > 0
 
     return (
         <form className={styles.operationForm}>

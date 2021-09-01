@@ -1,4 +1,5 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../../app/store";
 
 interface User {
     email: string,
@@ -22,5 +23,16 @@ const userSlice = createSlice({
 })
 
 export const {userAuthenticated} = userSlice.actions
+
+const {
+    selectIds, 
+    selectEntities,
+} = userAdapter.getSelectors<RootState>(state => state.user)
+
+export const selectCurrentUserEmail = createSelector(
+    [selectIds,(state:RootState) => selectEntities(state)],
+    (ids,selectedUser) =>  selectedUser[`${ids}`]?.email || ""
+)
+
 
 export default userSlice.reducer

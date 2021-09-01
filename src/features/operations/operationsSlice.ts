@@ -1,4 +1,9 @@
-import { createEntityAdapter, createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { 
+    createEntityAdapter, 
+    createSelector, 
+    createSlice, 
+    PayloadAction 
+} from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
 interface Operation {
@@ -42,6 +47,7 @@ export const selectOperationByUser = createSelector(
     [selectAllOperations, (state:RootState,email:string) => email],
     (operations,userEmail) => operations.filter(operation => operation.userEmail === userEmail)
 )
+
 
 
 export default operationsSlice.reducer

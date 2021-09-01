@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { useAppSelector } from '../../../app/hooks'
 import styles from './styles.module.scss'
 
+import {selectCategoriesByUser} from '../../categories/categoriesSlice'
+import { selectCurrentUserEmail } from '../../users/userSlice'
+
 interface OperationType {
     id: string,
     date: string,
@@ -24,8 +27,8 @@ const EditForm: React.FC<OperationObject> = ({operation,setSelectedOperation}) =
     const [amount,setAmount] = useState(operation.amount)
     const [operationDate,setOperationDate] = useState(operation.date)
     const [category,setCategory] = useState(operation.category)
-
-    const categories = useAppSelector(state => state.categories)
+    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
+    const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
 
     const handleSave = (e: React.FormEvent) => {
         
