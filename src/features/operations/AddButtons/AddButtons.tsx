@@ -32,7 +32,7 @@ const AddButtons: React.FC = () => {
     }
 
 
-    const canOpenOperations = categories.length !== 0
+    const canOpenOperations = Object.keys(categories.entities).length !== 0
     
     const props = useSpring({ 
         opacity: showOptions ? 1 : 0,

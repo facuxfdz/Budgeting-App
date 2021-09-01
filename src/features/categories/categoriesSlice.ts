@@ -1,29 +1,32 @@
-import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createEntityAdapter, createSelector } from '@reduxjs/toolkit'
+import { RootState } from '../../app/store'
 
-interface Categories extends Array<Category>{}
 interface Category {
     id: string,
-    name: string
+    name: string,
+    userEmail: string
 }
 
-const initialState: Categories = []
+const categoriesAdapter = createEntityAdapter<Category>()
+
 
 const categoriesSlice = createSlice({
     name: 'categories',
-    initialState,
+    initialState: categoriesAdapter.getInitialState(),
     reducers: {
-        categoryAdded: {
-            reducer: (state, action: PayloadAction<Category>) => {
-                state.push(action.payload)
-            },
-            prepare: (name:string) => {
-                const id = nanoid()
-                return {payload: {id,name}}
-            },
-        }
+        categoryAdded: categoriesAdapter.addOne
     }
 })
 
 export const {categoryAdded} = categoriesSlice.actions
+
+const {
+    selectAll: selectAllCategories
+} = categoriesAdapter.getSelectors<RootState>(state => state.categories) 
+
+export const selectCategoriesByUser = createSelector(
+    [selectAllCategories,(state:RootState,userEmail:string) => userEmail],
+    (categories,userEmail) => categories.filter(category => category.userEmail === userEmail)
+)
 
 export default categoriesSlice.reducer

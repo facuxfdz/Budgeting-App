@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react'
-import { useAppDispatch } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import styles from './styles.module.scss'
+import {nanoid} from '@reduxjs/toolkit'
 
 import { categoryAdded } from '../categoriesSlice'
 
@@ -11,6 +12,9 @@ export interface IOperationFormProps {
 const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => {
 
     const dispatch = useAppDispatch()
+
+    const user = useAppSelector(state => state.user)
+    const userEmail = String(Object.values(user)[0])
 
     const [category,setCategory] = useState('')
     
@@ -26,7 +30,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
         e.preventDefault()
 
         // Save logic
-        dispatch(categoryAdded(category))
+        dispatch(categoryAdded({id: nanoid(),name: category, userEmail}))
         alert('category added!')
         setShowCategoryForm(false)
     }

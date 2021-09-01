@@ -3,7 +3,13 @@ import { useAppSelector, useAppDispatch } from '../../../app/hooks'
 import styles from './styles.module.scss'
 import {nanoid} from '@reduxjs/toolkit'
 
-import {operationAdded} from '../operationsSlice'
+import {
+    operationAdded,
+} from '../operationsSlice'
+
+import {
+    selectCategoriesByUser,
+} from '../../categories/categoriesSlice'
 
 export interface IOperationFormProps {
     setShowOperationForm: React.Dispatch<React.SetStateAction<boolean>>
@@ -29,9 +35,9 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
     const [category,setCategory] = useState('')
 
     // Select from global state logic 
-    const categories = useAppSelector(state => state.categories)
     const user = useAppSelector(state => state.user)
     const userEmail = String(Object.values(user)[0])
+    const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
 
     // Helper functions 
     const resetAll = () => {
