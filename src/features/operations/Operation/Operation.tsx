@@ -3,7 +3,10 @@ import styles from './styles.module.scss'
 import Modal from 'react-bootstrap/Modal'
 import { useAppDispatch } from '../../../app/hooks'
 
-import {operationDeleted} from '../operationsSlice'
+import {
+    operationDeleted, 
+    operationSelected
+} from '../operationsSlice'
 
 interface OperationType {
     id: string,
@@ -34,6 +37,7 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
     }
 
     const handleEdit = () => {
+        dispatch(operationSelected(operation))
         setShowOperationActions(false)
     }
 

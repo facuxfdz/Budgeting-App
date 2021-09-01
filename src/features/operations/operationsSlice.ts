@@ -24,18 +24,25 @@ const operationsAdapter = createEntityAdapter<Operation>({
 
 const operationsSlice = createSlice({
     name: 'operationsSlice',
-    initialState: operationsAdapter.getInitialState(),
+    initialState: operationsAdapter.getInitialState({
+        selectedOperation: {}
+    }),
     reducers: {
         operationAdded: operationsAdapter.addOne,
         operationDeleted: (state, action: PayloadAction<string>) => {
             operationsAdapter.removeOne(state,action.payload)
+            state.selectedOperation = {}
+        },
+        operationSelected: (state, action: PayloadAction<Operation>) => {
+            state.selectedOperation = action.payload
         }
     }
 })
 
 export const {
     operationAdded,
-    operationDeleted
+    operationDeleted,
+    operationSelected
 } = operationsSlice.actions
 
 
