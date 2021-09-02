@@ -7,7 +7,6 @@ import { selectCurrentUserEmail } from '../../users/userSlice'
 import { 
     selectOperationById,
     operationUpdated, 
-    operationSelectedReseted
 } from '../operationsSlice'
 import { RouteComponentProps } from 'react-router'
 import { useHistory } from 'react-router-dom'
@@ -53,7 +52,6 @@ const EditForm: React.FC<Props> = ({match}) => {
 
         if(canSave){
             dispatch(operationUpdated(newOperation))
-            dispatch(state => operationSelectedReseted(state))
             history.push('/')
         }else if(amount <= 0){
             alert('Amount must be a valid number')

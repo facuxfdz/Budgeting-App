@@ -32,14 +32,11 @@ const operationsAdapter = createEntityAdapter<Operation>({
 
 const operationsSlice = createSlice({
     name: 'operationsSlice',
-    initialState: operationsAdapter.getInitialState({
-        selectedOperation: {}
-    }),
+    initialState: operationsAdapter.getInitialState(),
     reducers: {
         operationAdded: operationsAdapter.addOne,
         operationDeleted: (state, action: PayloadAction<string>) => {
             operationsAdapter.removeOne(state,action.payload)
-            state.selectedOperation = {}
         },
         operationUpdated: (state,action: PayloadAction<UpdatedOperationData>) => {
             const {id,concept,amount,date,category} = action.payload
@@ -54,9 +51,7 @@ const operationsSlice = createSlice({
             }
 
         },
-        operationSelectedReseted: (state,action) => {
-            state.selectedOperation = {}
-        }
+
     }
 })
 
@@ -64,7 +59,6 @@ export const {
     operationAdded,
     operationDeleted,
     operationUpdated,
-    operationSelectedReseted
 } = operationsSlice.actions
 
 
@@ -76,11 +70,6 @@ export const {
 export const selectOperationByUser = createSelector(
     [selectAllOperations, (state:RootState,email:string) => email],
     (operations,userEmail) => operations.filter(operation => operation.userEmail === userEmail)
-)
-
-export const currentOperation = createSelector(
-    [ (state:RootState) => state.operations.selectedOperation ],
-    (currentOperation) => currentOperation
 )
 
 
