@@ -4,9 +4,9 @@ import Modal from 'react-bootstrap/Modal'
 import { useAppDispatch } from '../../../app/hooks'
 
 import {
-    operationDeleted, 
-    operationSelected
+    operationDeleted,
 } from '../operationsSlice'
+import { Link } from 'react-router-dom'
 
 interface OperationType {
     id: string,
@@ -36,10 +36,6 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
         setShowOperationActions(false)
     }
 
-    const handleEdit = () => {
-        dispatch(operationSelected(operation))
-        setShowOperationActions(false)
-    }
 
     const handleHide = () => {
         setShowOperationActions(false)
@@ -81,10 +77,9 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
                     onClick={handleDelete}
                 >Delete</button>
 
-                <button
-                    className="btn btn-warning"
-                    onClick={handleEdit}
-                >Edit</button>
+                <Link to={`/editOperation/${operation.id}`} className="btn btn-warning">
+                    Edit
+                </Link>
             </Modal.Footer>
         </Modal>
 

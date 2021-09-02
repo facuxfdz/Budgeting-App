@@ -2,17 +2,27 @@ import React, { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { plusIcon } from '../../../app/icons'
 
+import {
+    selectCategoriesByUser
+} from '../../categories/categoriesSlice'
+
 import { OperationForm } from '../'
 import { CategoryForm } from '../../categories'
 import { useAppSelector } from '../../../app/hooks'
+import { selectCurrentUserEmail } from '../../users/userSlice'
+
 
 const AddButtons: React.FC = () => {
     
+    // Local state
     const [showOptions,setShowOptions] = useState(false)
     const [showOperationForm,setShowOperationForm] = useState(false)
     const [showCategoryForm,setShowCategoryForm] = useState(false)
-
-    const categories = useAppSelector(state => state.categories)
+    
+    // Global selector logic
+    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
+    const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
+    
     
     const enableAddOptions = () => {
         setShowOperationForm(false)
@@ -32,9 +42,10 @@ const AddButtons: React.FC = () => {
     }
 
 
-    const canOpenOperations = Object.keys(categories.entities).length !== 0
-    
-    const props = useSpring({ 
+    // Rendering logic
+    const canOpenOperations = categories.length !== 0
+
+    const props = useSpring({
         opacity: showOptions ? 1 : 0,
         marginTop: showOptions ? 0 : -10,
         delay: 95
@@ -99,6 +110,8 @@ const AddButtons: React.FC = () => {
 
                 : null
                 }
+                 
+            
             </div>
         
         </section>

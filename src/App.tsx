@@ -10,7 +10,10 @@ import { Navbar } from './app/components'
 import { useAppDispatch } from './app/hooks';
 import { OperationsList } from './features/operations';
 import AddButtons from './features/operations/AddButtons/AddButtons';
+import { EditForm } from './features/operations'
 import { userAuthenticated } from './features/users/userSlice'
+
+
 
 function App() {
 
@@ -38,6 +41,7 @@ function App() {
               </>
             )}
           />
+          <Route exact path="/editOperation/:operationId" component={EditForm} />
 
           <Redirect to="/" />
         </Switch>

@@ -1,50 +1,74 @@
 import React, { useState } from 'react'
-import { useAppSelector } from '../../../app/hooks'
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
 import styles from './styles.module.scss'
 
 import {selectCategoriesByUser} from '../../categories/categoriesSlice'
 import { selectCurrentUserEmail } from '../../users/userSlice'
+import { 
+    selectOperationById,
+    operationUpdated, 
+    operationSelectedReseted
+} from '../operationsSlice'
+import { RouteComponentProps } from 'react-router'
+import { useHistory } from 'react-router-dom'
+import { OperationType as Operation } from '..'
 
-interface OperationType {
-    id: string,
-    date: string,
-    concept: string,
-    amount: number,
-    type: string,
-    category: string,
-    userEmail: string
-
+interface MatchParams {
+    operationId: string
 }
 
-interface OperationObject {
-    operation: OperationType,
-    setSelectedOperation: React.Dispatch<React.SetStateAction<OperationType>>
-}
+interface Props extends RouteComponentProps<MatchParams>{}
 
-const EditForm: React.FC<OperationObject> = ({operation,setSelectedOperation}) => {
+const EditForm: React.FC<Props> = ({match}) => {
 
+    const history = useHistory()
+    const dispatch = useAppDispatch()
+    const {operationId} = match.params
+    
+    const operation = useAppSelector(state => selectOperationById(state,operationId)) as Operation
+
+    // Local state
     const [concept,setConcept] = useState(operation.concept)
     const [amount,setAmount] = useState(operation.amount)
     const [operationDate,setOperationDate] = useState(operation.date)
     const [category,setCategory] = useState(operation.category)
+    
+    
+    // Global selector logic
     const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
     const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
+    
 
+    // Handle functions
     const handleSave = (e: React.FormEvent) => {
+        e.preventDefault()
+
+        const newOperation = {
+            id: operationId,
+            concept,
+            amount,
+            date: operationDate,
+            category,
+        }
+
+        if(canSave){
+            dispatch(operationUpdated(newOperation))
+            dispatch(state => operationSelectedReseted(state))
+            history.push('/')
+        }else if(amount <= 0){
+            alert('Amount must be a valid number')
+        }else{
+            alert('All fields are required')
+        }
         
     }
 
     const handleCancel = () => {
-        setSelectedOperation({
-            id: '',
-            date: '',
-            concept: '',
-            amount: 0,
-            type: '',
-            category: '',
-            userEmail: ''
-        })
+        history.push('/')
     }
+
+    const canSave = [concept,amount,operationDate,category].every(Boolean) && amount > 0
+
 
     return (
         <form className={styles.editForm}>
@@ -88,7 +112,7 @@ const EditForm: React.FC<OperationObject> = ({operation,setSelectedOperation}) =
                     id="category"
                     onChange={e => setCategory(e.target.value)}
                 >
-                <option defaultValue="">Select a category</option>
+                <option value="">Select a category</option>
                     {categories.map(categ => (
                         <option 
                             key={categ.id}

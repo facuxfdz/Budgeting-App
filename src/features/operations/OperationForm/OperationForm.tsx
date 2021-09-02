@@ -184,7 +184,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                     id="category"
                     onChange={e => setCategory(e.target.value)}
                 >
-                <option defaultValue="">Select a category</option>
+                <option value="">Select a category</option>
                     {categories.map(categ => (
                         <option 
                             key={categ.id}

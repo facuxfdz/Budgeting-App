@@ -2,11 +2,11 @@ import {
     createEntityAdapter, 
     createSelector, 
     createSlice, 
-    PayloadAction 
+    PayloadAction,
 } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 
-interface Operation {
+export interface Operation {
     id: string,
     date: string,
     concept: string,
@@ -15,6 +15,14 @@ interface Operation {
     category: string,
     userEmail: string,
 
+}
+
+interface UpdatedOperationData {
+    id: string,
+    date: string,
+    concept: string,
+    amount: number,
+    category: string,
 }
 
 const operationsAdapter = createEntityAdapter<Operation>({
@@ -33,8 +41,21 @@ const operationsSlice = createSlice({
             operationsAdapter.removeOne(state,action.payload)
             state.selectedOperation = {}
         },
-        operationSelected: (state, action: PayloadAction<Operation>) => {
-            state.selectedOperation = action.payload
+        operationUpdated: (state,action: PayloadAction<UpdatedOperationData>) => {
+            const {id,concept,amount,date,category} = action.payload
+            
+            const existingOperation = state.entities[id]
+            
+            if(existingOperation){
+                existingOperation.concept = concept
+                existingOperation.amount = amount
+                existingOperation.date = date
+                existingOperation.category = category
+            }
+
+        },
+        operationSelectedReseted: (state,action) => {
+            state.selectedOperation = {}
         }
     }
 })
@@ -42,12 +63,14 @@ const operationsSlice = createSlice({
 export const {
     operationAdded,
     operationDeleted,
-    operationSelected
+    operationUpdated,
+    operationSelectedReseted
 } = operationsSlice.actions
 
 
-const {
-    selectAll: selectAllOperations
+export const {
+    selectAll: selectAllOperations,
+    selectById: selectOperationById
 } = operationsAdapter.getSelectors<RootState>(state => state.operations)
 
 export const selectOperationByUser = createSelector(
@@ -55,6 +78,10 @@ export const selectOperationByUser = createSelector(
     (operations,userEmail) => operations.filter(operation => operation.userEmail === userEmail)
 )
 
+export const currentOperation = createSelector(
+    [ (state:RootState) => state.operations.selectedOperation ],
+    (currentOperation) => currentOperation
+)
 
 
 export default operationsSlice.reducer
