@@ -10,14 +10,13 @@ import {
 import {
     selectCategoriesByUser,
 } from '../../categories/categoriesSlice'
+import { useHistory } from 'react-router'
 
-export interface IOperationFormProps {
-    setShowOperationForm: React.Dispatch<React.SetStateAction<boolean>>
-};
 
-const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) => {
+const OperationForm: React.FC = () => {
 
     const dispatch = useAppDispatch()
+    const history = useHistory()
 
     // Logic to extract the date in the required format for the input
     // By default, the operation will be the same day we are writting it
@@ -39,19 +38,11 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
     const userEmail = String(Object.values(user)[0])
     const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
 
-    // Helper functions 
-    const resetAll = () => {
-        setConcept('')
-        setAmount(0)
-        setOperationDate('')
-        setOperationType('')
-        setCategory('')
-    }
+
 
     // Handle functions
-    const handleCancel = () => {
-        setShowOperationForm(false)
-        resetAll()
+    const handleCancel = () => {    
+        history.push('/')
     }
 
     const handleIncomeCheck = () => {
@@ -91,9 +82,8 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
         }
 
         if(canSave){
-            resetAll()
             dispatch(operationAdded(operation))
-            setShowOperationForm(false)
+            history.push('/')
         }
         else if(amount <= 0){alert('Amount must be a valid value')}
         else alert('All fields required')
@@ -110,7 +100,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
         
         ?
             (
-            <>
+            <div className="text-center p-2">
             <label htmlFor="operation-type" className="text-warning mt-2 form-label">What are you going to registry?</label>
             <div id="operation-type" className=" text-warning">
 
@@ -133,83 +123,79 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowOperationForm}) =>
                 />
                 <label className="btn btn-outline-danger" htmlFor="danger-outlined">Expense</label>
             </div>
-            </>
+            </div>
             )
-            : null
+            : (
+                <>
+
+                <div className="mb-3 mt-3 text-warning">
+                    <label htmlFor="concept" className="form-label">Concept</label>
+                    <input 
+                        type="text" 
+                        value={concept} 
+                        onChange={handleConceptChange} 
+                        className="form-control" id="concept" 
+                    />
+                </div>
+                
+                <label htmlFor="amount" className="text-warning form-label">Amount</label>
+                <div className="mb-3 input-group">
+                    <span className="input-group-text">$</span>
+                    <input 
+                        type="number" 
+                        value={`${amount}`} 
+                        onChange={handleAmountChange} 
+                        className="form-control" id="amount" 
+                    />
+                </div>
+    
+                <div className="mb-3 mt-3 text-warning">
+                    <label htmlFor="date" className="form-label">Date</label>
+                    <input 
+                        type="date" 
+                        defaultValue={operationDate} 
+                        onChange={handleDateChange}
+                        className="form-control" id="date" 
+                    />
+                </div>
+                
+                <div className="mb-3 mt-3 text-warning">
+                    <label htmlFor="category" className="form-label">Category</label>
+                    <select 
+                        className="form-select" 
+                        aria-label="Default select example"
+                        value={category}
+                        id="category"
+                        onChange={e => setCategory(e.target.value)}
+                    >
+                    <option value="">Select a category</option>
+                        {categories.map(categ => (
+                            <option 
+                                key={categ.id}
+                                value={categ.name}    
+                            >
+                                {categ.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+    
+                <div className="mt-3 text-center">
+                <button 
+                    type="submit" 
+                    className="btn btn-warning me-4"
+                    onClick={handleSave}
+                >Save</button>
+                
+                <button 
+                    className="btn btn-danger"
+                    onClick={handleCancel}    
+                >Cancel</button>     
+                </div>
+                </>
+            )
         }       
 
-        {typeChecked 
-            ?
-            (          
-            
-            <>
-
-            <div className="mb-3 mt-3 text-warning">
-                <label htmlFor="concept" className="form-label">Concept</label>
-                <input 
-                    type="text" 
-                    value={concept} 
-                    onChange={handleConceptChange} 
-                    className="form-control" id="concept" 
-                />
-            </div>
-            
-            <label htmlFor="amount" className="text-warning form-label">Amount</label>
-            <div className="mb-3 input-group">
-                <span className="input-group-text">$</span>
-                <input 
-                    type="number" 
-                    value={`${amount}`} 
-                    onChange={handleAmountChange} 
-                    className="form-control" id="amount" 
-                />
-            </div>
-
-            <div className="mb-3 mt-3 text-warning">
-                <label htmlFor="date" className="form-label">Date</label>
-                <input 
-                    type="date" 
-                    defaultValue={operationDate} 
-                    onChange={handleDateChange}
-                    className="form-control" id="date" 
-                />
-            </div>
-            
-            <div className="mb-3 mt-3 text-warning">
-                <label htmlFor="category" className="form-label">Category</label>
-                <select 
-                    className="form-select" 
-                    aria-label="Default select example"
-                    value={category}
-                    id="category"
-                    onChange={e => setCategory(e.target.value)}
-                >
-                <option value="">Select a category</option>
-                    {categories.map(categ => (
-                        <option 
-                            key={categ.id}
-                            value={categ.name}    
-                        >
-                            {categ.name}
-                        </option>
-                    ))}
-                </select>
-            </div>
-            <button 
-                type="submit" 
-                className="btn btn-warning me-4"
-                onClick={handleSave}
-            >Save</button>
-            
-            <button 
-                className="btn btn-danger"
-                onClick={handleCancel}    
-            >Cancel</button>     
-            </>
-            )   
-
-            : null
-        }
         </form>
     );
 }

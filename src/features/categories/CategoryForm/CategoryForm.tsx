@@ -5,14 +5,14 @@ import {nanoid} from '@reduxjs/toolkit'
 
 import { categoryAdded } from '../categoriesSlice'
 import { selectCurrentUserEmail } from '../../users/userSlice'
+import { useHistory } from 'react-router'
 
-export interface IOperationFormProps {
-    setShowCategoryForm: React.Dispatch<React.SetStateAction<boolean>>
-};
 
-const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => {
+
+const OperationForm: React.FC = () => {
 
     const dispatch = useAppDispatch()
+    const history = useHistory()
 
     const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
     const [category,setCategory] = useState('')
@@ -22,7 +22,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
     }
     
     const handleCancel = () => {
-        setShowCategoryForm(false)
+        history.push('/')
     }
 
     const handleSave= (e:React.FormEvent) => {
@@ -30,14 +30,13 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
 
         // Save logic
         dispatch(categoryAdded({id: nanoid(),name: category, userEmail}))
-        alert('category added!')
-        setShowCategoryForm(false)
+        history.push('/')
     }
 
     
     return (
         <form className={styles.categoryForm}>
-            <div className="mb-3 mt-3 text-warning">
+            <div className="mb-3 mt-3 text-warning text-center">
                 <label htmlFor="category" className="form-label">Category name</label>
                 <input 
                     type="text" 
@@ -47,6 +46,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
                 />
             </div>
 
+            <div className="mt-4 text-center">
             <button 
                 type="submit" 
                 className="btn btn-warning me-4"
@@ -57,7 +57,7 @@ const OperationForm: React.FC<IOperationFormProps> = ({setShowCategoryForm}) => 
                 className="btn btn-danger"
                 onClick={handleCancel}    
             >Cancel</button>     
-            
+            </div>
 
         </form>
     );

@@ -8,10 +8,11 @@ import {
 
 import { Navbar } from './app/components'
 import { useAppDispatch } from './app/hooks';
-import { OperationsList } from './features/operations';
+import { OperationForm, OperationsList } from './features/operations';
 import AddButtons from './features/operations/AddButtons/AddButtons';
 import { EditForm } from './features/operations'
 import { userAuthenticated } from './features/users/userSlice'
+import { CategoryForm } from './features/categories';
 
 
 
@@ -42,7 +43,8 @@ function App() {
             )}
           />
           <Route exact path="/editOperation/:operationId" component={EditForm} />
-
+          <Route exact path="/newCategory" component={CategoryForm} />
+          <Route exact path="/newOperation" component={OperationForm} />
           <Redirect to="/" />
         </Switch>
       </div>

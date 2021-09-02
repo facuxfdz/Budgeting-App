@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { useSpring, animated } from '@react-spring/web'
 import { plusIcon } from '../../../app/icons'
+import { Link } from 'react-router-dom'
 
 import {
     selectCategoriesByUser
 } from '../../categories/categoriesSlice'
 
-import { OperationForm } from '../'
-import { CategoryForm } from '../../categories'
 import { useAppSelector } from '../../../app/hooks'
 import { selectCurrentUserEmail } from '../../users/userSlice'
 
@@ -16,8 +15,6 @@ const AddButtons: React.FC = () => {
     
     // Local state
     const [showOptions,setShowOptions] = useState(false)
-    const [showOperationForm,setShowOperationForm] = useState(false)
-    const [showCategoryForm,setShowCategoryForm] = useState(false)
     
     // Global selector logic
     const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
@@ -25,20 +22,7 @@ const AddButtons: React.FC = () => {
     
     
     const enableAddOptions = () => {
-        setShowOperationForm(false)
-        setShowCategoryForm(false)
         setShowOptions(!showOptions);
-    }
-
-    const handleOperation = () => {
-        setShowOptions(false)
-        setShowOperationForm(true)
-
-    }
-
-    const handleCategory = () => {
-        setShowOptions(false)
-        setShowCategoryForm(true)        
     }
 
 
@@ -71,20 +55,19 @@ const AddButtons: React.FC = () => {
                     ? (
                         <>
                         
+                            {canOpenOperations
+                                ?
+                                    <Link 
+                                        to='/newOperation'
+                                        className="btn button-outline-secondary mt-4 me-3"
+                                    >Operation</Link>
+                                : null
+                            }                       
                             
-                            <button 
-                                type="button" 
-                                className="btn button-outline-secondary mt-3 me-2"
-                                onClick={handleOperation}
-                                disabled={!canOpenOperations}
-                            >Operation</button>
-                                                    
-                            
-                            <button 
-                                type="button" 
-                                className="btn button-outline-secondary mt-3 ms-2"
-                                onClick={handleCategory}
-                            >Category</button>
+                            <Link 
+                                to='/newCategory'
+                                className="btn button-outline-secondary mt-4"
+                            >Category</Link>
 
                         </>
                     )
@@ -93,23 +76,7 @@ const AddButtons: React.FC = () => {
                 }                
                 </animated.div>
 
-                {showOperationForm
-                
-                ? <OperationForm 
-                    setShowOperationForm={setShowOperationForm}
-                />   
 
-                : null
-                }
-
-                {showCategoryForm
-                
-                ?   <CategoryForm 
-                        setShowCategoryForm={setShowCategoryForm}
-                    />   
-
-                : null
-                }
                  
             
             </div>
