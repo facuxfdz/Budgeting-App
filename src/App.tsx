@@ -6,13 +6,25 @@ import {
   Redirect,
 } from 'react-router-dom'
 
-import { Navbar } from './app/components'
+// Helpers
 import { useAppDispatch } from './app/hooks';
-import { OperationForm, OperationsList } from './features/operations';
-import AddButtons from './features/operations/AddButtons/AddButtons';
-import { EditForm } from './features/operations'
-import { userAuthenticated } from './features/users/userSlice'
-import { CategoryForm } from './features/categories';
+
+// Components
+import { Navbar } from './app/components'
+import {
+  AddButtons, 
+  EditForm, 
+  OperationForm, 
+  OperationsList
+} from './features/operations';
+import { 
+  CategoryForm 
+} from './features/categories';
+
+// Actions
+import { 
+  userAuthenticated 
+} from './features/users/userSlice'
 
 
 
