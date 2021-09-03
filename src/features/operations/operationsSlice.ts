@@ -32,7 +32,9 @@ const operationsAdapter = createEntityAdapter<Operation>({
 
 const operationsSlice = createSlice({
     name: 'operationsSlice',
-    initialState: operationsAdapter.getInitialState(),
+    initialState: operationsAdapter.getInitialState({
+        balance: 0
+    }),
     reducers: {
         operationAdded: (state,action: PayloadAction<Operation>) => {
             const { amount, type } = action.payload            
@@ -44,9 +46,10 @@ const operationsSlice = createSlice({
             }
 
             const newOperation = {...action.payload,amount:newAmount}
-
+            
             operationsAdapter.addOne(state,newOperation)
-        
+            state.balance += newOperation.amount
+            
         },
         operationDeleted: (state, action: PayloadAction<string>) => {
             operationsAdapter.removeOne(state,action.payload)
