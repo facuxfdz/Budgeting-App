@@ -34,7 +34,20 @@ const operationsSlice = createSlice({
     name: 'operationsSlice',
     initialState: operationsAdapter.getInitialState(),
     reducers: {
-        operationAdded: operationsAdapter.addOne,
+        operationAdded: (state,action: PayloadAction<Operation>) => {
+            const { amount, type } = action.payload            
+            let newAmount
+            if(type === 'expense'){
+                newAmount = -amount
+            }else{
+                newAmount = amount
+            }
+
+            const newOperation = {...action.payload,amount:newAmount}
+
+            operationsAdapter.addOne(state,newOperation)
+        
+        },
         operationDeleted: (state, action: PayloadAction<string>) => {
             operationsAdapter.removeOne(state,action.payload)
         },
