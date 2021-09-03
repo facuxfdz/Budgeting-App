@@ -112,14 +112,10 @@ export const selectUserBalance = createSelector(
     (balance) => balance
 )
 
-export const selectIncomeOperations = createSelector(
-    [selectAllOperations],
-    (operations) => operations.filter(operation => operation.type === 'income')
+export const selectOperationByType = createSelector(
+    [selectAllOperations, (state:RootState,type: 'income' | 'expense') => type],
+    (operations,type) => operations.filter(operation => operation.type === type)
 )
 
-export const selectExpenseOperations = createSelector(
-    [selectAllOperations],
-    (operations) => operations.filter(operation => operation.type === 'expense')
-)
 
 export default operationsSlice.reducer
