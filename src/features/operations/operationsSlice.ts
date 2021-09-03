@@ -49,7 +49,7 @@ const operationsSlice = createSlice({
             
             operationsAdapter.addOne(state,newOperation)
             state.balance += newOperation.amount
-            
+
         },
         operationDeleted: (state, action: PayloadAction<string>) => {
             const id = action.payload
@@ -110,6 +110,16 @@ export const selectOperationByUser = createSelector(
 export const selectUserBalance = createSelector(
     [(state:RootState) => state.operations.balance],
     (balance) => balance
+)
+
+export const selectIncomeOperations = createSelector(
+    [selectAllOperations],
+    (operations) => operations.filter(operation => operation.type === 'income')
+)
+
+export const selectExpenseOperations = createSelector(
+    [selectAllOperations],
+    (operations) => operations.filter(operation => operation.type === 'expense')
 )
 
 export default operationsSlice.reducer
