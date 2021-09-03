@@ -59,12 +59,25 @@ const operationsSlice = createSlice({
             
             const existingOperation = state.entities[id]
             
+            let oldAmount
+            let newAmount
+
             if(existingOperation){
+                if(existingOperation.type === 'expense'){
+                    newAmount = -amount
+                }else{
+                    newAmount = amount
+                }
+                
+                oldAmount = existingOperation.amount
+
+                state.balance = state.balance - oldAmount + newAmount
                 existingOperation.concept = concept
-                existingOperation.amount = amount
+                existingOperation.amount = newAmount
                 existingOperation.date = date
                 existingOperation.category = category
             }
+            
 
         },
 

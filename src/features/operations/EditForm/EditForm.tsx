@@ -28,7 +28,7 @@ const EditForm: React.FC<Props> = ({match}) => {
 
     // Local state
     const [concept,setConcept] = useState(operation.concept)
-    const [amount,setAmount] = useState(operation.amount)
+    const [amount,setAmount] = useState(Math.abs(operation.amount))
     const [operationDate,setOperationDate] = useState(operation.date)
     const [category,setCategory] = useState(operation.category)
     
