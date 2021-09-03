@@ -52,7 +52,13 @@ const operationsSlice = createSlice({
             
         },
         operationDeleted: (state, action: PayloadAction<string>) => {
-            operationsAdapter.removeOne(state,action.payload)
+            const id = action.payload
+            const existingOperation = state.entities[id]
+            if(existingOperation){
+                const oldAmount = existingOperation.amount
+                operationsAdapter.removeOne(state,id)
+                state.balance -= oldAmount
+            }
         },
         operationUpdated: (state,action: PayloadAction<UpdatedOperationData>) => {
             const {id,concept,amount,date,category} = action.payload
