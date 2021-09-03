@@ -88,5 +88,9 @@ export const selectOperationByUser = createSelector(
     (operations,userEmail) => operations.filter(operation => operation.userEmail === userEmail)
 )
 
+export const selectUserBalance = createSelector(
+    [(state:RootState) => state.operations.balance],
+    (balance) => balance
+)
 
 export default operationsSlice.reducer
