@@ -1,16 +1,23 @@
+// Libraries
 import React, { ChangeEvent, useState } from 'react'
-import { useAppSelector, useAppDispatch } from '../../../app/hooks'
-import styles from './styles.module.scss'
 import {nanoid} from '@reduxjs/toolkit'
+import { useHistory } from 'react-router'
 
+// Hooks
+import { useAppSelector, useAppDispatch } from '../../../app/hooks'
+
+// Action creators
 import {
     operationAdded,
 } from '../operationsSlice'
 
+// Selector functions
 import {
     selectCategoriesByUser,
 } from '../../categories/categoriesSlice'
-import { useHistory } from 'react-router'
+
+// Styles
+import styles from './styles.module.scss'
 
 
 const OperationForm: React.FC = () => {
@@ -33,7 +40,7 @@ const OperationForm: React.FC = () => {
     const [typeChecked,setTypeChecked] = useState(false)
     const [category,setCategory] = useState('')
 
-    // Select from global state logic 
+    // Select data from global state 
     const user = useAppSelector(state => state.user)
     const userEmail = String(Object.values(user)[0])
     const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
@@ -90,7 +97,7 @@ const OperationForm: React.FC = () => {
 
     }
 
-    // Conditional logic
+    // Rendering logic
     const canSave = [concept,amount,operationDate,operationType,category,userEmail].every(Boolean) && amount > 0
 
     return (

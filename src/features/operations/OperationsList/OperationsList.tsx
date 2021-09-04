@@ -1,26 +1,46 @@
+// Libraries
 import React, { useState } from 'react'
-import { useAppSelector } from '../../../app/hooks';
-import { Operation } from '../'
-import { selectOperationByType, selectOperationByUser, selectUserBalance} from  '../operationsSlice'
-import { selectCurrentUserEmail } from '../../users/userSlice';
+
+// Hooks
+import { useAppSelector } from '../../../app/hooks'
+
+// Selector functions
+import { 
+    selectOperationByType, 
+    selectOperationByUser, 
+    selectUserBalance
+} from  '../operationsSlice'
+import { 
+    selectCurrentUserEmail 
+} from '../../users/userSlice'
+
+// Helper functions
 import { calculateBalanceClass } from '../../../app/helpers'
 
-const OperationsList: React.FC = () => {
+// Components
+import { Operation } from '../'
 
-    const DATALIMIT = 10
+interface Props {
+    DATALIMIT: number
+}
 
+const OperationsList: React.FC<Props> = ({DATALIMIT}) => {
+    
+    // Local state
     const [currentPage,setCurrentPage] = useState(1)
     
-    
+    // Select data from global state
     const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
     const userOperations = useAppSelector(state => selectOperationByUser(state,userEmail))
     const userBalance = useAppSelector(state => selectUserBalance(state))
     const incomeOperations = useAppSelector(state => selectOperationByType(state,'income'))
     const expenseOperations = useAppSelector(state => selectOperationByType(state,'expense'))
     
+    // Calculate values
     let balanceStatusClass = calculateBalanceClass(incomeOperations,expenseOperations)
     const pages = Math.ceil(userOperations.length / DATALIMIT)
 
+    // Pagination functions
     const goToNextPage = () => {
         setCurrentPage(page => page + 1)
     }

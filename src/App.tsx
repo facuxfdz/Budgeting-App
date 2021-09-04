@@ -33,10 +33,11 @@ function App() {
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(userAuthenticated({email: 'facu@facu',password:'comostas'}))
+    dispatch(userAuthenticated({email: 'user@user',password:'pass'}))
     //eslint-disable-next-line
   },[])
-
+  const DATALIMIT = 10
+  
   return (
     <Router>
 
@@ -50,7 +51,7 @@ function App() {
             render={() => (
               <>
                 <AddButtons />
-                <OperationsList />
+                <OperationsList DATALIMIT={DATALIMIT} />
               </>
             )}
           />

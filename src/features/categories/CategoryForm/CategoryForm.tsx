@@ -1,11 +1,26 @@
+// Libraries
 import React, { ChangeEvent, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import styles from './styles.module.scss'
+import { useHistory } from 'react-router'
 import {nanoid} from '@reduxjs/toolkit'
 
-import { categoryAdded } from '../categoriesSlice'
-import { selectCurrentUserEmail } from '../../users/userSlice'
-import { useHistory } from 'react-router'
+// Hooks
+import { 
+    useAppDispatch, 
+    useAppSelector 
+} from '../../../app/hooks'
+
+// Select functions
+import { 
+    selectCurrentUserEmail 
+} from '../../users/userSlice'
+
+// Action creators
+import { 
+    categoryAdded 
+} from '../categoriesSlice'
+
+// Styles
+import styles from './styles.module.scss'
 
 
 
@@ -14,9 +29,13 @@ const OperationForm: React.FC = () => {
     const dispatch = useAppDispatch()
     const history = useHistory()
 
-    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
+    // Local state
     const [category,setCategory] = useState('')
     
+    // Select data from global state
+    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
+    
+    // Handle functions
     const handleCategory = (e: ChangeEvent<HTMLInputElement>) => {
         setCategory(e.target.value)
     }
@@ -29,8 +48,12 @@ const OperationForm: React.FC = () => {
         e.preventDefault()
 
         // Save logic
-        dispatch(categoryAdded({id: nanoid(),name: category, userEmail}))
-        history.push('/')
+        if(category){
+            dispatch(categoryAdded({id: nanoid(),name: category, userEmail}))
+            history.push('/')
+        }else{
+            alert('Category name is required')
+        }
     }
 
     

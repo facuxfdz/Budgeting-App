@@ -1,14 +1,21 @@
+// Libraries
 import React, { useState } from 'react'
-import { useSpring, animated } from '@react-spring/web'
-import { plusIcon } from '../../../app/icons'
 import { Link } from 'react-router-dom'
+import { useSpring, animated } from '@react-spring/web'
 
+// Hooks
+import { useAppSelector } from '../../../app/hooks'
+
+// Helper files
+import { plusIcon } from '../../../app/icons'
+
+// Selector functions
 import {
     selectCategoriesByUser
 } from '../../categories/categoriesSlice'
-
-import { useAppSelector } from '../../../app/hooks'
-import { selectCurrentUserEmail } from '../../users/userSlice'
+import { 
+    selectCurrentUserEmail 
+} from '../../users/userSlice'
 
 
 const AddButtons: React.FC = () => {
@@ -16,17 +23,17 @@ const AddButtons: React.FC = () => {
     // Local state
     const [showOptions,setShowOptions] = useState(false)
     
-    // Global selector logic
+    // Select data from global state
     const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
     const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
     
     
+    
+    // Rendering logic
     const enableAddOptions = () => {
         setShowOptions(!showOptions);
     }
 
-
-    // Rendering logic
     const canOpenOperations = categories.length !== 0
 
     const props = useSpring({

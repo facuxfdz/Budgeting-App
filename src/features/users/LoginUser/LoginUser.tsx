@@ -5,7 +5,10 @@ export interface ILoginUserProps {};
 const LoginUser: React.FC<ILoginUserProps> = (props) => {
     return (
         <div>
+            
+            {/* Not implemented yet */}
             Sign in
+            
         </div>
     );
 }

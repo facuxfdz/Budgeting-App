@@ -1,17 +1,30 @@
+// Libraries
 import React, { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../../app/hooks'
-import styles from './styles.module.scss'
+import { RouteComponentProps } from 'react-router'
+import { useHistory } from 'react-router-dom'
 
-import {selectCategoriesByUser} from '../../categories/categoriesSlice'
-import { selectCurrentUserEmail } from '../../users/userSlice'
+// Hooks
+import { useAppDispatch, useAppSelector } from '../../../app/hooks'
+
+// Selector functions
+import {
+    selectCategoriesByUser
+} from '../../categories/categoriesSlice'
+import { 
+    selectCurrentUserEmail 
+} from '../../users/userSlice'
 import { 
     selectOperationById,
     operationUpdated, 
 } from '../operationsSlice'
-import { RouteComponentProps } from 'react-router'
-import { useHistory } from 'react-router-dom'
-import { OperationType as Operation } from '..'
 
+// Type imports
+import type { OperationType as Operation } from '..'
+
+// Styles
+import styles from './styles.module.scss'
+
+// Types
 interface MatchParams {
     operationId: string
 }
@@ -22,10 +35,15 @@ const EditForm: React.FC<Props> = ({match}) => {
 
     const history = useHistory()
     const dispatch = useAppDispatch()
+    
+    // URL Extract logic
     const {operationId} = match.params
     
+    // Select data from global state
+    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
     const operation = useAppSelector(state => selectOperationById(state,operationId)) as Operation
-
+    const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
+    
     // Local state
     const [concept,setConcept] = useState(operation.concept)
     const [amount,setAmount] = useState(Math.abs(operation.amount))
@@ -33,11 +51,6 @@ const EditForm: React.FC<Props> = ({match}) => {
     const [category,setCategory] = useState(operation.category)
     
     
-    // Global selector logic
-    const userEmail = useAppSelector(state => selectCurrentUserEmail(state))
-    const categories = useAppSelector(state => selectCategoriesByUser(state,userEmail))
-    
-
     // Handle functions
     const handleSave = (e: React.FormEvent) => {
         e.preventDefault()
@@ -65,6 +78,7 @@ const EditForm: React.FC<Props> = ({match}) => {
         history.push('/')
     }
 
+    // Rendering logic
     const canSave = [concept,amount,operationDate,category].every(Boolean) && amount > 0
 
 

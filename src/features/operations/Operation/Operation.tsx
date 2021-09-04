@@ -1,23 +1,22 @@
+// Libraries
 import React, { useState } from 'react'
-import styles from './styles.module.scss'
+import { Link } from 'react-router-dom'
 import Modal from 'react-bootstrap/Modal'
+
+// Hooks
 import { useAppDispatch } from '../../../app/hooks'
 
+// Action Creators
 import {
     operationDeleted,
 } from '../operationsSlice'
-import { Link } from 'react-router-dom'
 
-interface OperationType {
-    id: string,
-    date: string,
-    concept: string,
-    amount: number,
-    type: string,
-    category: string,
-    userEmail: string
+// Type imports
+import type { OperationType } from '../'
 
-}
+// Styles
+import styles from './styles.module.scss'
+
 
 interface OperationObject {
     operation: OperationType
@@ -27,10 +26,13 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
 
     const dispatch = useAppDispatch() 
 
+    // Local state
     const [showOperationActions,setShowOperationActions] = useState(false)
 
+    // Data extract
     const {id, concept,amount, date} = operation
     
+    // Handle functions
     const handleDelete = () => {
         dispatch( operationDeleted(id) )
         setShowOperationActions(false)
