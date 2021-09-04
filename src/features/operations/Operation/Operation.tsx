@@ -29,7 +29,7 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
 
     const [showOperationActions,setShowOperationActions] = useState(false)
 
-    const {id, concept,amount} = operation
+    const {id, concept,amount, date} = operation
     
     const handleDelete = () => {
         dispatch( operationDeleted(id) )
@@ -51,9 +51,11 @@ const Operation: React.FC<OperationObject> = ({operation}) => {
             onClick={handleShowOperationActions}
             className={`${styles.operationCard}`}>
             
-            <span className={`${styles.concept}`}>{concept}</span>
+            <div className={`${styles.concept}`}>
+                <span>{concept}</span>
+                <span className="d-block text-secondary">{date}</span>
+            </div>
             <span className={`${styles.amount}`}>${amount}</span>
-                
         </div>
         
         <Modal

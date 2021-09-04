@@ -26,7 +26,7 @@ interface UpdatedOperationData {
 }
 
 const operationsAdapter = createEntityAdapter<Operation>({
-    selectId: operation => operation.id
+    sortComparer: (a,b) => b.date.localeCompare(a.date)
 })
 
 
